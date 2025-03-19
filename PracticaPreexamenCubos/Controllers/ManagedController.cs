@@ -39,6 +39,7 @@ namespace PracticaPreexamenCubos.Controllers
 
                 ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
+
                 string controller = TempData["controller"]?.ToString() ?? "Cubos";
                 string action = TempData["action"]?.ToString() ?? "Index";
 

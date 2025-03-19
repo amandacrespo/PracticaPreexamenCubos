@@ -3,6 +3,14 @@
     var numProductos = carritoIds.Count;
 }
 
+<li class="nav-item">
+    <a asp-controller="Cubos"
+       asp-action="Carrito"
+       class="nav-link">
+        Carrito (@numProductos)
+    </a>
+</li>
+
 @if (!Context.User.Identity.IsAuthenticated)
 {
     <li class="nav-item">
@@ -15,13 +23,6 @@
 }
 else
 {
-    <li class="nav-item">
-        <a asp-controller="Cubos"
-           asp-action="Carrito"
-           class="nav-link">
-            Carrito (@numProductos)
-        </a>
-    </li>
     <li class="nav-item">
         <a asp-controller="Cubos"
            asp-action="HistorialCompra"

@@ -22,8 +22,6 @@ namespace PracticaPreexamenCubos.Controllers
             return View(cubos);
         }
 
-
-        [AuthorizeUsuarios]
         public async Task<IActionResult> Carrito()
         {
             var carritoIds = HttpContext.Session.GetObject<List<int>>("CarritoIds");
@@ -37,7 +35,6 @@ namespace PracticaPreexamenCubos.Controllers
             return View(cubos);
         }
 
-        [AuthorizeUsuarios]
         public async Task<IActionResult> AddCarrito(int id, string? view)
         {
             var carritoIds = HttpContext.Session.GetObject<List<int>>("CarritoIds");
@@ -95,7 +92,7 @@ namespace PracticaPreexamenCubos.Controllers
             var carritoIds = HttpContext.Session.GetObject<List<int>>("CarritoIds");
             int idusuario = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (carritoIds != null)
+            if (carritoIds.Count != 0)
             {
                 await this.repo.FinalizarCompraAsync(idusuario, carritoIds);
                 HttpContext.Session.Remove("CarritoIds");
