@@ -1,0 +1,83 @@
+﻿@model IEnumerable<PracticaPreexamenCubos.Models.Cubo>
+
+@{
+    ViewData["Title"] = "Carrito";
+    var carrito = Context.Session.GetObject<List<int>>("CarritoIds");
+    var cantidades = carrito?.GroupBy(id => id).ToDictionary(g => g.Key, g => g.Count()) ?? new Dictionary<int, int>();
+}
+
+<h1>Carrito</h1>
+
+@if(Model.Count() == 0){
+    <h3 class="text-danger">No hay articulos en el carrito</h3>
+} else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id_cubo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Modelo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Marca)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Imagen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.precio)
+                </th>
+                <th>
+                    Cantidad 
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id_cubo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Modelo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Marca)
+                    </td>
+                    <td>
+                        <img src="@item.Imagen" width="100" />
+                    </td>
+                    <td>
+                        @{
+                            var res = item.precio * cantidades[item.Id_cubo];
+                        }
+
+                        @res
+                    </td>
+                    <td>
+                        <div>
+                            @Html.ActionLink("+", "AddCarrito", new { id = item.Id_cubo, view = "Carrito" })
+                            @cantidades[item.Id_cubo]
+                            @Html.ActionLink("-", "RemoveCarrito", new { id = item.Id_cubo })
+                        </div>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Borrar", "DeleteCarrito", new { id = item.Id_cubo })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" asp-controller="Cubos" asp-action="FinalizarCompra">Comprar</a>
+}
